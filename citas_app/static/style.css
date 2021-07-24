@@ -1,0 +1,41 @@
+h1{
+
+    background-color: burlywood;
+
+}
+
+.registration{
+    height: auto;
+    width: 200px;
+    background-color: cyan;
+    display: inline-block;
+    /* margin: 5px; */
+    padding: 5px;
+}
+
+.login{
+    height: auto;
+    width: 200px;
+    background-color: rgb(17, 182, 182);
+    display: inline-block;
+    /* margin: 5px; */
+    padding: 5px;
+}
+
+.errores{
+    height: auto;
+    width: auto;
+    color: white;
+    background-color: rgb(98, 3, 0);
+    display: block;
+}
+
+.encabezado{
+    height: auto;
+    width: 200px;
+    background-color: rgb(60, 189, 189);
+    display: inline-block;
+    /* margin: 5px; */
+    padding: 5px;
+}
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments</title>
+    {% load static %}
+    <link rel = "stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div>
+        <h1>Hello, {{logged_user.first_name}}</h1>
+        <a href='/user/logout'>Log Out</a>
+    </div>
+
+    <div>
+        <h2>Here are your Appointments:</h2>
+        <a href='/user/add_task'>Add new appointment</a>
+        <br><br>
+    </div>
+
+    <div>
+        <table border='1'>
+            <thead>
+                <th>Tasks</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </thead>
+
+            <tbody> {% for task in all_appointments %}
+                    <td>{{task.task}}</td>
+                    <td>{{task.date|date:'d-m-Y'}}</td>        
+                    <td>{{task.status}}</td>        
+                    <td>
+                    
+                        {% if task.status == 'Pending' %}
+                            <a href=''>Edit.
+                            <p>|</p>
+                            <a href='/appointment/delete/{{task.id}}'>Delete
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>{% endfor %}
+        </table>
+    </div>
+
+
+    <div>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+    
+    
+</body>
+</html>

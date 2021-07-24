@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add an Appointment</title>
+    {% load static %}
+    <link rel = "stylesheet" href="{% static 'style.css' %}">
+
+</head>
+<body>
+    <div>
+        <h1>Add an appointment</h1>
+        <a href='/user/logout'>Log Out</a>
+        <br><br>
+    </div>
+
+    <div>
+        <form action='/user/add_appointment' method="post">
+            {% csrf_token %}
+            <label for='task'>Task: </label>
+            <textarea name='task'></textarea>
+            <br><br>
+
+            <label for='date'>Date: </label>
+            <input type='date' name='date'>
+            <br><br>
+
+            <p>Status:</p>
+            <select name='status'>
+                <option value ='-1'>Please select an Status</option>
+                <option value='Pending'>Pending</option>
+                <option value='Missed'>Missed</option>
+                <option value='Done'>Done</option>
+            </select>
+            <br><br>
+
+            <button>Add</button>
+        </form>
+    </div>
+
+
+    <div>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+
+</body>
+</html>
