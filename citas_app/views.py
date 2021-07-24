@@ -3,6 +3,7 @@ from django.http import request
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from .models import User, Appointment
+
 import bcrypt
 
 # Página de inicio
@@ -56,15 +57,15 @@ def appointments(request):
     context = {
         'logged_user': User.objects.get(id=request.session['logged_user']),
         'all_appointments': Appointment.objects.filter(user_task_id=request.session['logged_user'])
-
     }
-    print (context)
+
     return render(request,'appointments.html', context)
 
 def add_task(request):
     if 'logged_user' not in request.session:
         messages.error(request, 'Please register or please log in first')
         return redirect('/')
+
     return render(request, 'add_appointments.html')
 
 def add_appointment(request):
@@ -77,6 +78,7 @@ def add_appointment(request):
     task = request.POST.get("task")
     date = request.POST.get("date")
     status = request.POST.get("status")
+
 
     if len(task) <3:
         messages.error(request, 'Task must be at least 3 characters')
@@ -100,4 +102,80 @@ def delete_appointment(request, task_id):
     task = Appointment.objects.get(id=task_id)
     task.delete()
     return redirect('/user/appointments')
+
+def edit_apointments_show_html(request, task_id):
+    if 'logged_user' not in request.session:
+        messages.error(request, 'Please register or please log in first')
+        return redirect('/')
     
+    if request.method == "POST":
+        user_task = User.objects.get(id=request.session['logged_user'])
+        task = request.POST.get("task")
+        date = request.POST.get("date")
+        status = request.POST.get("status")
+
+        if len(task) <3:
+            messages.error(request, 'Task must be at least 3 characters')
+            return redirect('/apointments/edit/'+task_id)
+        if not date:
+            messages.error(request, 'Invalid Date, please select a date')
+            return redirect('/apointments/edit/'+task_id)
+        if status == '-1':
+            messages.error(request, 'Please, select Status Option')
+            return redirect('/apointments/edit/'+task_id)
+
+        new_task = Appointment.objects.get(id=task_id)
+        new_task.task = task
+        new_task.save()
+
+        new_date = Appointment.objects.get(id=task_id)
+        new_date.date = date
+        new_date.save()
+
+        new_status = Appointment.objects.get(id=task_id)
+        new_status.status = status
+        new_status.save()
+
+        return redirect('/user/appointments')
+    else: 
+        getAppointmet = Appointment.objects.get(id=task_id)
+        date = str(getAppointmet.date)
+        print(date)
+        context = {'appointment': getAppointmet,
+                    'date': date}
+        
+        return render(request, 'edit_appointments.html', context)
+
+def edit_apointments(request, task_id):
+    if 'logged_user' not in request.session:
+        messages.error(request, 'Please register or please log in first')
+        return redirect('/')
+
+    user_task = User.objects.get(id=request.session['logged_user'])
+    task = request.POST.get("task")
+    date = request.POST.get("date")
+    status = request.POST.get("status")
+
+    if len(task) <3:
+        messages.error(request, 'Task must be at least 3 characters')
+        return redirect('/user/edit_apointment')
+    if not date:
+        messages.error(request, 'Invalid Date, please select a date')
+        return redirect('/user/edit_apointment')
+    if status == '-1':
+        messages.error(request, 'Please, select Status Option')
+        return redirect('/user/edit_apointment')
+
+    new_task = Appointment.objects.get(id=task_id)
+    new_task.task = task
+    new_task.save()
+
+    new_date = Appointment.objects.get(id=task_id)
+    new_date.date = date
+    new_date.save()
+
+    new_status = Appointment.objects.get(id=task_id)
+    new_status.status = status
+    new_status.save()
+
+    return redirect('/user/appointments')

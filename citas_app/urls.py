@@ -8,5 +8,7 @@ urlpatterns = [
     path('user/logout', views.logout),
     path('user/add_task', views.add_task),
     path('user/add_appointment', views.add_appointment),
-    path('appointment/delete/<int:task_id>', views.delete_appointment)
+    path('appointment/delete/<int:task_id>', views.delete_appointment),
+    path('apointments/edit/<int:task_id>', views.edit_apointments_show_html),
+    #path('edit_apointments/<int:task_id>', views.edit_apointments)
 ]
